@@ -2,17 +2,17 @@ OCAMLMAKEFILE = OCamlMakefile
 
 SOURCES = static_files.ml static_templates.ml config.ml pages.ml dispatch.ml server.ml 
 RESULT = server
-PACKS += orm cohttpserver
+PACKS += orm cohttpserver htmlgen
 PACKS += lwt.syntax
 DEBUG = yes
 ANNOTATE = yes
 REALTRASH = static_files.ml static_templates.ml
 
-.PHONY: depend all
-depend: static_files.ml static_templates.ml
+all: nc
 	@ :
 
-all: nc
+.PHONY: depend all
+depend: static_files.ml static_templates.ml
 	@ :
 
 distclean: clean
@@ -20,9 +20,9 @@ distclean: clean
 
 STATIC_FILES=../files
 STATIC_TEMPLATES=../templates
-static_files.ml:
+static_files.ml: 
 	mlcrunch $(STATIC_FILES) > $@
-static_templates.ml:
-	mlcrunch -ext inc $(STATIC_TEMPLATES) > $@
+static_templates.ml: $(wildcard $(STATIC_TEMPLATE))
+	mlcrunch $(STATIC_TEMPLATES) > $@
 
 -include $(OCAMLMAKEFILE)

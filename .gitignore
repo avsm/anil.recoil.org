@@ -1,0 +1,12 @@
+*.o
+*.a
+*.cmi
+*.cmx
+*.cma
+*.cmo
+*.cmxa
+.*.swp
+*.annot
+._d/
+src/server
+src/static_*.ml
