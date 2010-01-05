@@ -36,7 +36,7 @@ let t req oc =
 
   logmod "File" "%s" (String.concat "/" path_elem);
   (* determine if it is static or dynamic content *)
-  match Static_files.t (String.concat "/" path_elem) with 
+  match Static.Files.t (String.concat "/" path_elem) with 
   | Some body ->
       let status = `Status (`Success `OK) in
       Http_daemon.respond ~body ~status oc

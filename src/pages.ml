@@ -1,6 +1,6 @@
 open Printf
 open Htmlgen
-module ST = Static_templates
+module ST = Static.Templates
 
 (* get template body *)
 let get n = match ST.t n with None -> failwith (n ^ " not found") | Some x -> x

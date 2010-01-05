@@ -3,7 +3,7 @@ TYPE_CONV_PATH "Papers"
 type author = {
   fullname: string;
   institution: string;
-  homepage: string option
+  homepage: string option;
 }
 and conference = {
   short_name: string;
@@ -18,12 +18,10 @@ and paper = {
   year: int;
   month: string;
   bibtex: string;
-  links: (string * string) list; (* type * url *)
+  links: (string * string) list; 
   notes: string option;
 }
-with orm (debug:all; dot: "papers.dot"), sexp
+with orm (debug:all)
 
-let confs = [
-  { short_name="icfem09"; long_name="International Conference on Formal Engineering Methods"; url=None };
- ]
-
+let _ = 
+ ()
