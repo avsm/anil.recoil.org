@@ -1,7 +1,7 @@
 all:
 	@cd fs && $(MAKE) nc
 	@cd bibtex && $(MAKE)
-	@cd src && $(MAKE) 
+	@cd src && $(MAKE) depend nc
 
 dbs: tdb sdb bdb
 

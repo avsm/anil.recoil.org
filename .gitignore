@@ -18,4 +18,6 @@ content/
 bibtex/bibtex_lexer.ml
 bibtex/bibtex_parser.ml
 bibtex/bibtex_parser.mli
-
+src/bib.ml
+src/db.ml
+src/fs.ml
