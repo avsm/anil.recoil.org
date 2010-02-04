@@ -1,10 +1,8 @@
 OCAMLMAKEFILE = ../OCamlMakefile
 
-SOURCES = config.ml papers.ml pages.ml dispatch.ml server.ml 
-LIBS = static
-INCDIRS = ../crunch
+SOURCES = bib.ml fs.ml config.ml db.ml pages.ml papers.ml dispatch.ml server.ml 
 RESULT = server
-PACKS += orm cohttpserver htmlgen orm.syntax
+PACKS += orm cohttpserver htmlgen json-tc.syntax orm.syntax
 DEBUG = yes
 PREDS = camlp4o
 ANNOTATE = yes
@@ -12,8 +10,8 @@ ANNOTATE = yes
 all: nc
 	@ :
 
-.PHONY: depend all
-depend: 
-	$(MAKE) -f Makefile.static all
+depend:
+	ln -nsf ../bibtex/bib.ml
+	ln -nfs ../fs/fs.ml
 
 -include $(OCAMLMAKEFILE)

@@ -12,6 +12,8 @@ module Resp = struct
     | "index.html" :: [] ->
         let body = Pages.Index.t in
         Http_daemon.respond ~body oc
+    | "papers" :: tl ->
+        Papers.dispatch oc tl
     | _ -> 
       Http_daemon.respond_not_found oc
 
@@ -36,8 +38,9 @@ let t req oc =
 
   logmod "File" "%s" (String.concat "/" path_elem);
   (* determine if it is static or dynamic content *)
-  match Static.Files.t (String.concat "/" path_elem) with 
-  | Some body ->
-      let status = `Status (`Success `OK) in
-      Http_daemon.respond ~body ~status oc
-  | None -> Resp.dispatch req oc path_elem
+  try
+    let body = Db.get_static (String.concat "/" path_elem) in
+    let status = `Status (`Success `OK) in
+    Http_daemon.respond ~body ~status oc
+  with Not_found -> 
+    Resp.dispatch req oc path_elem

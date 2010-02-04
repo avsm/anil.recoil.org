@@ -8,5 +8,14 @@
 .*.swp
 *.annot
 ._d/
+._bcdi/
+._ncdi/
+bibtex/bib2db
+fs/fs2db
 src/server
 src/static_*.ml
+content/
+bibtex/bibtex_lexer.ml
+bibtex/bibtex_parser.ml
+bibtex/bibtex_parser.mli
+

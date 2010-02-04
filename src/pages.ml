@@ -1,9 +1,8 @@
 open Printf
 open Htmlgen
-module ST = Static.Templates
 
 (* get template body *)
-let get n = match ST.t n with None -> failwith (n ^ " not found") | Some x -> x
+let get n = Db.get_tmpl n
 (* substitute markdown from template *)
 let md n = Markdown_html.t (Markdown.parse_text (get n))
 
@@ -31,9 +30,12 @@ let page p h = subst (header ^ p ^ footer) h
 
 module Index = struct
 
-  let h = keys ~extra:[ "@@CONTENT@@", md "intro.md" ] "index"
- 
-  let t =
-    page (get "index.inc") h
+  let h = keys ~extra:[ "@@CONTENT@@", md "intro.md" ; "@@HEADER_PIC@@", "home" ] "index"
+  let t = page (get "index.inc") h
 
+end
+
+module Pages = struct
+  let h c = keys ~extra:[ "@@CONTENT@@", c; "@@HEADER_PIC@@", "papers" ] "papers"
+  let t c = page (get "papers.inc") (h c)
 end

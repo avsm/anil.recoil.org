@@ -1,27 +1,21 @@
+open Printf
+open Cohttpserver
+
 TYPE_CONV_PATH "Papers"
 
-type author = {
-  fullname: string;
-  institution: string;
-  homepage: string option;
-}
-and conference = {
-  short_name: string;
-  long_name: string;
-  url: string option;
-}
-and paper = {
-  name: string;
-  tags: string list;
-  authors: author list;
-  conference: conference;
-  year: int;
-  month: string;
-  bibtex: string;
-  links: (string * string) list; 
-  notes: string option;
-}
-with orm (debug:all)
+open Bib
 
-let _ = 
- ()
+let dispatch oc = function
+ | [] ->
+    let titles =
+      Db.with_bib (fun db ->
+        let all = ent_get db in
+        let yor = function |None -> 1900 | Some x -> x in
+        let all = List.sort (fun a b -> (yor b.year) - (yor a.year)) all in
+        List.map ent_to_summary_html all
+      ) in
+    let html = String.concat "\n" (List.map (fun t ->
+      "<p>" ^ t ^ "</p>") titles) in
+    let body = Pages.Pages.t html in
+    Http_daemon.respond ~body oc
+ | _ -> Http_daemon.respond_not_found oc
