@@ -13,9 +13,10 @@ tdb:
 	./fs/fs2db -db content/db/tmpl.db content/templates
 bdb:
 	rm -f content/db/bib.db
-	./bibtex/bib2db ./content/biblio.bib content/db/bib.db
+	./bibtex/bib2db content/biblio.bib content/db/bib.db
 
 clean:
 	@cd fs && $(MAKE) clean
+	@cd bibtex && $(MAKE) clean
 	@cd src && $(MAKE) clean
 	rm -f content/db/bib.db content/db/static.db content/db/tmpl.db

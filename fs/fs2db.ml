@@ -57,15 +57,18 @@ open Printf
 
 (* output file to database *)
 let output_file db root name =
-  printf "%s%!" name;
+  printf "%s\n%!" name;
   let filename = Filename.concat root name in
   let ch = open_in filename in
   let len = (Unix.stat filename).Unix.st_size in
   let buf = Buffer.create 1024 in
   (try Buffer.add_channel buf ch len with _ -> ());
   close_in ch;
-  t_save db { name=name; body=(Buffer.contents buf) };
-  printf "\n%!"
+  eprintf "pwd: %s\n%!" (Sys.getcwd ());
+  (try
+    t_save db { name=name; body=(Buffer.contents buf) };
+   with e -> (eprintf "YYYY\n%!"; raise e);
+  )
   
 open Arg
 open Printf
@@ -81,5 +84,8 @@ let _ =
   parse spec (fun s -> dirs := (realpath s) :: !dirs) 
     (sprintf "Usage: %s [-ext <filter extension>] -db <dbname> <dir1> <dir2> ..." Sys.argv.(0));
   let ext = !ext in
-  let db = Fs.t_init !db in
+  let db = try
+    Fs.t_init !db 
+    with e -> (eprintf "XXXXXXX\n%!"; raise e)
+  in
   List.iter (walk_directory_tree ?ext (output_file db)) !dirs
